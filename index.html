@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV - José M. Caballero| Técnico Informático</title>
+    <style>
+        /* Reset y estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #00ff00;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Canvas de fondo con efecto Matrix */
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-color: #000;
+        }
+
+        /* Contenedor principal */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Encabezado */
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(0, 20, 0, 0.85);
+            border: 2px solid #00ff00;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+        }
+
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px #00ff00;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00; }
+            to { text-shadow: 0 0 20px #00ff00, 0 0 30px #00ff00, 0 0 40px #00ff00; }
+        }
+
+        header p {
+            font-size: 1.3em;
+            color: #00cc00;
+        }
+
+        /* Carrusel de imágenes */
+        .carousel-container {
+            position: relative;
+            max-width: 800px;
+            height: 400px;
+            margin: 30px auto;
+            background: rgba(0, 20, 0, 0.85);
+            border: 2px solid #00ff00;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.4);
+        }
+
+        .carousel-slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            height: 100%;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #001a00;
+        }
+
+        .carousel-slide img,
+        .carousel-slide svg {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        /* Controles del carrusel */
+        .carousel-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+
+        .carousel-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(0, 255, 0, 0.3);
+            border: 2px solid #00ff00;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .carousel-dot.active {
+            background: #00ff00;
+            box-shadow: 0 0 10px #00ff00;
+        }
+
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 255, 0, 0.2);
+            border: 2px solid #00ff00;
+            color: #00ff00;
+            padding: 15px 20px;
+            cursor: pointer;
+            font-size: 20px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .carousel-arrow:hover {
+            background: rgba(0, 255, 0, 0.4);
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+        }
+
+        .carousel-arrow.left { left: 10px; }
+        .carousel-arrow.right { right: 10px; }
+
+        /* Secciones */
+        .section {
+            background: rgba(0, 30, 0, 0.85);
+            border: 2px solid #00ff00;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+        }
+
+        .section h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #00ff00;
+            padding-bottom: 10px;
+            text-shadow: 0 0 10px #00ff00;
+        }
+
+        /* Línea temporal */
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, #00ff00, #00cc00, #009900);
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(0, 50, 0, 0.6);
+            border: 1px solid #00cc00;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .timeline-item:hover {
+            background: rgba(0, 70, 0, 0.7);
+            transform: translateX(5px);
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -50px;
+            top: 20px;
+            width: 15px;
+            height: 15px;
+            background: #00ff00;
+            border: 3px solid #000;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00ff00;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .timeline-item h3 {
+            color: #00ff00;
+            font-size: 1.4em;
+            margin-bottom: 5px;
+        }
+
+        .timeline-item .period {
+            color: #00cc00;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        .timeline-item p {
+            color: #00dd00;
+        }
+
+        /* Enlaces destacados */
+        a {
+            color: #00ff00;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 5px 10px;
+            border: 1px solid #00ff00;
+            border-radius: 5px;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        a:hover {
+            background: #00ff00;
+            color: #000;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
+            transform: scale(1.05);
+        }
+
+        /* Competencias técnicas */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .skill-category {
+            background: rgba(0, 50, 0, 0.6);
+            padding: 15px;
+            border: 1px solid #00cc00;
+            border-radius: 8px;
+        }
+
+        .skill-category h4 {
+            color: #00ff00;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .skill-category ul {
+            list-style: none;
+        }
+
+        .skill-category li {
+            color: #00dd00;
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .skill-category li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: #00ff00;
+        }
+
+        /* Cursos */
+        .courses-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .course-item {
+            background: rgba(0, 50, 0, 0.6);
+            padding: 15px;
+            border: 1px solid #00cc00;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .course-item:hover {
+            background: rgba(0, 70, 0, 0.7);
+            border-color: #00ff00;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+        }
+
+        .course-item h4 {
+            color: #00ff00;
+            margin-bottom: 5px;
+        }
+
+        .course-info {
+            color: #00cc00;
+            font-size: 0.9em;
+        }
+
+        /* Secciones adicionales */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .info-card {
+            background: rgba(0, 50, 0, 0.6);
+            padding: 20px;
+            border: 1px solid #00cc00;
+            border-radius: 8px;
+        }
+
+        .info-card h3 {
+            color: #00ff00;
+            margin-bottom: 15px;
+        }
+
+        .info-card ul {
+            list-style: none;
+        }
+
+        .info-card li {
+            color: #00dd00;
+            padding: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .info-card li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: #00ff00;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 20, 0, 0.85);
+            border: 2px solid #00ff00;
+            border-radius: 15px;
+            margin-top: 30px;
+            color: #00cc00;
+        }
+
+        /* Responsividad */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            .carousel-container {
+                height: 300px;
+            }
+
+            .timeline {
+                padding-left: 30px;
+            }
+
+            .timeline-item::before {
+                left: -40px;
+            }
+
+            .skills-grid,
+            .courses-list,
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Canvas para el efecto Matrix -->
+    <canvas id="matrix-canvas"></canvas>
+
+    <div class="container">
+        <!-- Encabezado -->
+        <header>
+            <h1>José M. Caballero</h1>
+            <p>Técnico Informático | Especialista en Sistemas y Desarrollo de Aplicaciones</p>
+        </header>
+
+        <!-- Carrusel de imágenes -->
+        <div class="carousel-container">
+            <div class="carousel-slides" id="carousel-slides">
+                <!-- Slide 1: SVG - Código -->
+                <div class="carousel-slide">
+                    <svg width="600" height="350" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="600" height="350" fill="#001a00"/>
+                        <text x="50" y="50" font-family="Courier" font-size="16" fill="#00ff00">&lt;?php</text>
+                        <text x="50" y="80" font-family="Courier" font-size="16" fill="#00dd00">  function processData($data) {</text>
+                        <text x="50" y="110" font-family="Courier" font-size="16" fill="#00dd00">    return array_map(function($item) {</text>
+                        <text x="50" y="140" font-family="Courier" font-size="16" fill="#00dd00">      return $item * 2;</text>
+                        <text x="50" y="170" font-family="Courier" font-size="16" fill="#00dd00">    }, $data);</text>
+                        <text x="50" y="200" font-family="Courier" font-size="16" fill="#00dd00">  }</text>
+                        <text x="50" y="230" font-family="Courier" font-size="16" fill="#00ff00">?&gt;</text>
+                        <circle cx="550" cy="50" r="5" fill="#00ff00" opacity="0.5">
+                            <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+                        </circle>
+                    </svg>
+                </div>
+
+                <!-- Slide 2: Imagen libre - Tecnología -->
+                <div class="carousel-slide">
+                    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=400&fit=crop" alt="Tecnología">
+                </div>
+
+                <!-- Slide 3: SVG - Red de nodos -->
+                <div class="carousel-slide">
+                    <svg width="600" height="350" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="600" height="350" fill="#001a00"/>
+                        <line x1="100" y1="100" x2="200" y2="150" stroke="#00ff00" stroke-width="2"/>
+                        <line x1="200" y1="150" x2="300" y2="100" stroke="#00ff00" stroke-width="2"/>
+                        <line x1="300" y1="100" x2="400" y2="200" stroke="#00ff00" stroke-width="2"/>
+                        <line x1="400" y1="200" x2="500" y2="150" stroke="#00ff00" stroke-width="2"/>
+                        <line x1="200" y1="150" x2="400" y2="200" stroke="#00ff00" stroke-width="2"/>
+                        <line x1="100" y1="100" x2="300" y2="100" stroke="#00ff00" stroke-width="2"/>
+                        <circle cx="100" cy="100" r="15" fill="#00ff00" stroke="#003300" stroke-width="3"/>
+                        <circle cx="200" cy="150" r="15" fill="#00ff00" stroke="#003300" stroke-width="3"/>
+                        <circle cx="300" cy="100" r="15" fill="#00ff00" stroke="#003300" stroke-width="3"/>
+                        <circle cx="400" cy="200" r="15" fill="#00ff00" stroke="#003300" stroke-width="3"/>
+                        <circle cx="500" cy="150" r="15" fill="#00ff00" stroke="#003300" stroke-width="3"/>
+                        <text x="250" y="280" font-family="Arial" font-size="24" fill="#00ff00" text-anchor="middle">NETWORK SYSTEMS</text>
+                    </svg>
+                </div>
+
+                <!-- Slide 4: Imagen libre - Programación -->
+                <div class="carousel-slide">
+                    <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400&fit=crop" alt="Programación">
+                </div>
+
+                <!-- Slide 5: Imagen libre - Servidores -->
+                <div class="carousel-slide">
+                    <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=400&fit=crop" alt="Servidores">
+                </div>
+            </div>
+
+            <!-- Controles del carrusel -->
+            <div class="carousel-arrow left" onclick="moveCarousel(-1)">❮</div>
+            <div class="carousel-arrow right" onclick="moveCarousel(1)">❯</div>
+            <div class="carousel-controls" id="carousel-dots"></div>
+        </div>
+
+        <!-- Formación Académica -->
+        <section class="section">
+            <h2>📚 Formación Académica</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3>Técnico Superior en Desarrollo de Aplicaciones Multiplataforma</h3>
+                    <p class="period">2015 - 2018</p>
+                    <p>I.E.S. El Rincón - Formación Profesional de Grado Superior</p>
+                    <p>Especialización en desarrollo de aplicaciones para múltiples plataformas, incluyendo Android, iOS y aplicaciones de escritorio.</p>
+                </div>
+
+                <div class="timeline-item">
+                    <h3>Diplomado en Informática</h3>
+                    <p class="period">1993 - 1997</p>
+                    <p><a href="https://www.ulpgc.es/" target="_blank">Universidad de Las Palmas de Gran Canaria</a></p>
+                    <p>Formación universitaria en fundamentos de informática, programación, bases de datos y sistemas operativos.</p>
+                </div>
+
+                <div class="timeline-item">
+                    <h3>Técnico Especialista en Informática de Gestión (FP II)</h3>
+                    <p class="period">1991 - 1993</p>
+                    <p>I.E.S. El Rincón - Formación Profesional de Segundo Grado</p>
+                    <p>Especialización en sistemas informáticos aplicados a la gestión empresarial y administrativa.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experiencia Profesional -->
+        <section class="section">
+            <h2>💼 Experiencia Profesional</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3>Técnico Auxiliar de Informática (TAI)</h3>
+                    <p class="period">2019 - Actualidad</p>
+                    <p><a href="https://sede.agenciatributaria.gob.es/" target="_blank">Agencia Estatal de Administración Tributaria (AEAT)</a> - Las Palmas</p>
+                    <p>Administración de sistemas informáticos, soporte técnico, gestión de redes y mantenimiento de infraestructura IT. Implementación de medidas de seguridad y actualización de sistemas.</p>
+                </div>
+
+                <div class="timeline-item">
+                    <h3>Administrador de Sistemas Senior</h3>
+                    <p class="period">2016 - 2018</p>
+                    <p>Soluciones TIC Canarias S.L.</p>
+                    <p>Gestión completa de infraestructura IT, virtualización con VMware, administración de servidores Windows/Linux, y gestión de copias de seguridad. Supervisión de equipo técnico.</p>
+                </div>
+
+                <div class="timeline-item">
+                    <h3>Desarrollador de Software</h3>
+                    <p class="period">2013 - 2015</p>
+                    <p>Innovatech Solutions</p>
+                    <p>Desarrollo de aplicaciones web con PHP, JavaScript y MySQL. Creación de APIs REST y aplicaciones móviles híbridas con Ionic Framework.</p>
+                </div>
+
+                <div class="timeline-item">
+                    <h3>Técnico de Sistemas y Redes</h3>
+                    <p class="period">2008 - 2013</p>
+                    <p>Tecnología Avanzada Canarias</p>
+                    <p>Administración de redes LAN/WAN, configuración de switches y routers Cisco, implementación de VPNs y gestión de firewall. Monitorización de sistemas con Nagios.</p>
+                </div>
+
+                <div class="timeline-item">
+                    <h3>Analista Programador</h3>
+                    <p class="period">2005 - 2006</p>
+                    <p>Grupo Empresarial del Sur</p>
+                    <p>Desarrollo y mantenimiento de aplicaciones de gestión empresarial en Java y Oracle. Análisis de requisitos y documentación técnica.</p>
+                </div>
+
+                <div class="timeline-item">
+                    <h3>Técnico de Soporte Informático</h3>
+                    <p class="period">2003 - 2005</p>
+                    <p>Servicios Informáticos Insulares</p>
+                    <p>Soporte técnico a usuarios, instalación y configuración de equipos, resolución de incidencias hardware/software y mantenimiento preventivo.</p>
+                </div>
+
+                <div class="timeline-item">
+                    <h3>Administrador de Sistemas Junior</h3>
+                    <p class="period">1998 - 2003</p>
+                    <p>Informática Empresarial LP</p>
+                    <p>Gestión de servidores Windows NT/2000, administración de Active Directory, configuración de servicios de red (DNS, DHCP, IIS) y soporte a usuarios.</p>
+                </div>
+
+                <div class="timeline-item">
+                    <h3>Técnico Informático (Prácticas)</h3>
+                    <p class="period">1996 - 1997</p>
+                    <p>Ayuntamiento de Las Palmas de Gran Canaria</p>
+                    <p>Prácticas universitarias: soporte técnico, mantenimiento de equipos informáticos y asistencia en proyectos de digitalización administrativa.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Competencias Técnicas -->
+        <section class="section">
+            <h2>🔧 Competencias Técnicas</h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h4>Sistemas Operativos</h4>
+                    <ul>
+                        <li>Windows Server (2008-2022)</li>
+                        <li>Linux (Ubuntu, CentOS, Red Hat)</li>
+                        <li>Active Directory</li>
+                        <li>PowerShell / Bash</li>
+                    </ul>
+                </div>
+
+                <div class="skill-category">
+                    <h4>Virtualización y Cloud</h4>
+                    <ul>
+                        <li>VMware vSphere / ESXi</li>
+                        <li>Hyper-V</li>
+                        <li>Docker / Kubernetes</li>
+                        <li>AWS / Azure (básico)</li>
+                    </ul>
+                </div>
+
+                <div class="skill-category">
+                    <h4>Redes y Seguridad</h4>
+                    <ul>
+                        <li>Cisco IOS</li>
+                        <li>TCP/IP, VLANs, VPN</li>
+                        <li>Firewalls (pfSense, FortiGate)</li>
+                        <li>Monitorización (Nagios, Zabbix)</li>
+                    </ul>
+                </div>
+
+                <div class="skill-category">
+                    <h4>Desarrollo de Software</h4>
+                    <ul>
+                        <li>Java, C#, PHP</li>
+                        <li>JavaScript, HTML5, CSS3</li>
+                        <li>Python para scripting</li>
+                        <li>Git / SVN</li>
+                    </ul>
+                </div>
+
+                <div class="skill-category">
+                    <h4>Bases de Datos</h4>
+                    <ul>
+                        <li>SQL Server</li>
+                        <li>MySQL / MariaDB</li>
+                        <li>Oracle Database</li>
+                        <li>PostgreSQL</li>
+                    </ul>
+                </div>
+
+                <div class="skill-category">
+                    <h4>Desarrollo Multiplataforma</h4>
+                    <ul>
+                        <li>Android Studio / Kotlin</li>
+                        <li>JavaFX</li>
+                        <li>Ionic / Cordova</li>
+                        <li>React Native</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Formación Complementaria -->
+        <section class="section">
+            <h2>🎓 Formación Complementaria</h2>
+            <div class="courses-list">
+                <div class="course-item">
+                    <h4>Administración Avanzada de VMware vSphere 8</h4>
+                    <p class="course-info">2024 • 40 horas</p>
+                </div>
+
+                <div class="course-item">
+                    <h4>Ciberseguridad en Entornos Corporativos</h4>
+                    <p class="course-info">2024 • 50 horas</p>
+                </div>
+
+                <div class="course-item">
+                    <h4>Desarrollo de Aplicaciones con Kotlin para Android</h4>
+                    <p class="course-info">2023 • 60 horas</p>
+                </div>
+
+                <div class="course-item">
+                    <h4>Kubernetes para Administradores de Sistemas</h4>
+                    <p class="course-info">2023 • 45 horas</p>
+                </div>
+
+                <div class="course-item">
+                    <h4>Python para Automatización de Tareas</h4>
+                    <p class="course-info">2022 • 35 horas</p>
+                </div>
+
+                <div class="course-item">
+                    <h4>Implementación de Soluciones de Backup con Veeam</h4>
+                    <p class="course-info">2022 • 30 horas</p>
+                </div>
+
+                <div class="course-item">
+                    <h4>Administración de Microsoft Azure</h4>
+                    <p class="course-info">2021 • 50 horas</p>
+                </div>
+
+                <div class="course-item">
+                    <h4>Seguridad en Redes con Firewalls FortiGate</h4>
+                    <p class="course-info">2021 • 40 horas</p>
+                </div>
+
+                <div class="course-item">
+                    <h4>DevOps: Integración y Entrega Continua</h4>
+                    <p class="course-info">2020 • 55 horas</p>
+                </div>
+
+                <div class="course-item">
+                    <h4>Desarrollo de APIs REST con Spring Boot</h4>
+                    <p class="course-info">2019 • 40 horas</p>
+                </div>
+
+                <div class="course-item">
+                    <h4>Docker y Contenedores</h4>
+                    <p class="course-info">2019 • 35 horas</p>
+                </div>
+
+                <div class="course-item">
+                    <h4>Administración Avanzada de Linux</h4>
+                    <p class="course-info">2018 • 60 horas</p>
+                </div>
+
+                <div class="course-item">
+                    <h4>Desarrollo de Aplicaciones Móviles con Ionic</h4>
+                    <p class="course-info">2017 • 45 horas</p>
+                </div>
+
+                <div class="course-item">
+                    <h4>Virtualización con VMware vSphere 6</h4>
+                    <p class="course-info">2016 • 50 horas</p>
+                </div>
+
+                <div class="course-item">
+                    <h4>Programación en Java EE</h4>
+                    <p class="course-info">2015 • 70 horas</p>
+                </div>
+
+                <div class="course-item">
+                    <h4>Administración de Bases de Datos SQL Server</h4>
+                    <p class="course-info">2014 • 45 horas</p>
+                </div>
+
+                <div class="course-item">
+                    <h4>Redes Cisco CCNA - Routing y Switching</h4>
+                    <p class="course-info">2013 • 80 horas</p>
+                </div>
+
+                <div class="course-item">
+                    <h4>Desarrollo Web con PHP y MySQL</h4>
+                    <p class="course-info">2012 • 50 horas</p>
+                </div>
+
+                <div class="course-item">
+                    <h4>Seguridad Informática y Ethical Hacking</h4>
+                    <p class="course-info">2011 • 60 horas</p>
+                </div>
+
+                <div class="course-item">
+                    <h4>Administración de Servidores Windows Server 2008</h4>
+                    <p class="course-info">2010 • 55 horas</p>
+                </div>
+
+                <div class="course-item">
+                    <h4>Programación Orientada a Objetos con C#</h4>
+                    <p class="course-info">2009 • 45 horas</p>
+                </div>
+
+                <div class="course-item">
+                    <h4>Monitorización de Sistemas con Nagios</h4>
+                    <p class="course-info">2008 • 30 horas</p>
+                </div>
+
+                <div class="course-item">
+                    <h4>Bases de Datos Oracle 10g</h4>
+                    <p class="course-info">2006 • 50 horas</p>
+                </div>
+
+                <div class="course-item">
+                    <h4>Administración de Active Directory</h4>
+                    <p class="course-info">2005 • 40 horas</p>
+                </div>
+
+                <div class="course-item">
+                    <h4>Redes TCP/IP y Configuración de Routers</h4>
+                    <p class="course-info">2003 • 45 horas</p>
+                </div>
+
+                <div class="course-item">
+                    <h4>Programación Web con JavaScript y AJAX</h4>
+                    <p class="course-info">2002 • 35 horas</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Idiomas y Aficiones -->
+        <div class="info-grid">
+            <div class="info-card">
+                <h3>🌍 Idiomas</h3>
+                <ul>
+                    <li>Español - Nativo</li>
+                    <li>Inglés - Nivel Intermedio-Alto (B2)</li>
+                    <li>Lectura técnica en inglés - Avanzado</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>🎯 Aficiones e Intereses</h3>
+                <ul>
+                    <li>Tecnologías emergentes y tendencias IT</li>
+                    <li>Proyectos open source en GitHub</li>
+                    <li>Robótica y domótica</li>
+                    <li>Senderismo y fotografía de naturaleza</li>
+                    <li>Ajedrez y juegos de estrategia</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Sobre mí -->
+        <section class="section">
+            <h2>👤 Perfil Profesional</h2>
+            <p style="color: #00dd00; font-size: 1.1em; line-height: 1.8;">
+                Profesional de la informática con más de 25 años de experiencia en el sector tecnológico, 
+                especializado tanto en administración de sistemas como en desarrollo de software. Mi trayectoria 
+                profesional abarca desde la implementación y gestión de infraestructuras IT complejas hasta el 
+                desarrollo de aplicaciones multiplataforma. Actualmente desempeño funciones como Técnico Auxiliar 
+                de Informática en la AEAT, donde aplico mis conocimientos en sistemas, redes y seguridad informática 
+                para garantizar el correcto funcionamiento de los servicios tecnológicos de la Administración. 
+                Mi formación continua y mi pasión por la tecnología me permiten mantenerme actualizado en las 
+                últimas tendencias y herramientas del sector, combinando la solidez de la experiencia con la 
+                innovación constante.
+            </p>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p>© 2025 José M. Caballero - Currículum Vitae</p>
+            <p style="margin-top: 10px; font-size: 0.9em;">Las Palmas de Gran Canaria, Islas Canarias</p>
+            <p style="margin-top: 10px; font-size: 0.85em; color: #009900;">
+                "La tecnología es mejor cuando acerca a las personas" - Matt Mullenweg
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // ============================================
+        // EFECTO MATRIX EN EL CANVAS DE FONDO
+        // ============================================
+        
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Ajustar el tamaño del canvas al viewport
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // Caracteres que se mostrarán (binarios y japoneses)
+        const matrixChars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+        const chars = matrixChars.split('');
+
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+
+        // Array para almacenar la posición Y de cada columna
+        const drops = [];
+        for (let i = 0; i < columns; i++) {
+            drops[i] = Math.random() * canvas.height / fontSize;
+        }
+
+        // Función que dibuja el efecto Matrix
+        function drawMatrix() {
+            // Capa semitransparente negra para crear el efecto de desvanecimiento
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Color verde para el texto
+            ctx.fillStyle = '#00ff00';
+            ctx.font = fontSize + 'px monospace';
+
+            // Recorrer cada columna
+            for (let i = 0; i < drops.length; i++) {
+                // Seleccionar un carácter aleatorio
+                const char = chars[Math.floor(Math.random() * chars.length)];
+                
+                // Dibujar el carácter en la posición actual
+                ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+
+                // Reiniciar la posición si ha llegado al final
+                // O aleatoriamente para crear variedad
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+
+                // Incrementar la posición Y
+                drops[i]++;
+            }
+        }
+
+        // Ejecutar la animación cada 50ms
+        setInterval(drawMatrix, 50);
+
+        // Redimensionar el canvas cuando cambia el tamaño de la ventana
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            // Recalcular el número de columnas
+            const newColumns = canvas.width / fontSize;
+            drops.length = 0;
+            for (let i = 0; i < newColumns; i++) {
+                drops[i] = Math.random() * canvas.height / fontSize;
+            }
+        });
+
+        // ============================================
+        // FUNCIONALIDAD DEL CARRUSEL DE IMÁGENES
+        // ============================================
+        
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+        const totalSlides = slides.length;
+        let autoplayInterval;
+
+        // Crear los puntos indicadores del carrusel
+        const dotsContainer = document.getElementById('carousel-dots');
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'carousel-dot';
+            if (i === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => goToSlide(i));
+            dotsContainer.appendChild(dot);
+        }
+
+        const dots = document.querySelectorAll('.carousel-dot');
+
+        // Función para mover el carrusel
+        function moveCarousel(direction) {
+            currentSlide += direction;
+            
+            // Control de límites circular
+            if (currentSlide >= totalSlides) {
+                currentSlide = 0;
+            } else if (currentSlide < 0) {
+                currentSlide = totalSlides - 1;
+            }
+            
+            updateCarousel();
+            resetAutoplay();
+        }
+
+        // Función para ir a un slide específico
+        function goToSlide(index) {
+            currentSlide = index;
+            updateCarousel();
+            resetAutoplay();
+        }
+
+        // Actualizar la posición del carrusel y los indicadores
+        function updateCarousel() {
+            const slidesContainer = document.getElementById('carousel-slides');
+            slidesContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+            
+            // Actualizar los puntos activos
+            dots.forEach((dot, index) => {
+                if (index === currentSlide) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        // Función de autoplay
+        function autoplay() {
+            autoplayInterval = setInterval(() => {
+                moveCarousel(1);
+            }, 5000); // Cambiar cada 5 segundos
+        }
+
+        // Reiniciar el autoplay cuando el usuario interactúa
+        function resetAutoplay() {
+            clearInterval(autoplayInterval);
+            autoplay();
+        }
+
+        // Iniciar el autoplay al cargar la página
+        autoplay();
+
+        // Pausar autoplay cuando el mouse está sobre el carrusel
+        const carouselContainer = document.querySelector('.carousel-container');
+        carouselContainer.addEventListener('mouseenter', () => {
+            clearInterval(autoplayInterval);
+        });
+
+        // Reanudar autoplay cuando el mouse sale del carrusel
+        carouselContainer.addEventListener('mouseleave', () => {
+            autoplay();
+        });
+
+        // ============================================
+        // ANIMACIONES Y EFECTOS ADICIONALES
+        // ============================================
+
+        // Animación de aparición al hacer scroll (Intersection Observer)
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '0';
+                    entry.target.style.transform = 'translateY(20px)';
+                    entry.target.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, 100);
+                    
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Observar todos los elementos de la línea temporal y secciones
+        document.querySelectorAll('.timeline-item, .section, .info-card').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Efecto de typing en el encabezado
+        const header = document.querySelector('header h1');
+        const originalText = header.textContent;
+        header.textContent = '';
+        
+        let charIndex = 0;
+        function typeWriter() {
+            if (charIndex < originalText.length) {
+                header.textContent += originalText.charAt(charIndex);
+                charIndex++;
+                setTimeout(typeWriter, 100);
+            }
+        }
+        
+        // Iniciar el efecto de typing después de un breve delay
+        setTimeout(typeWriter, 500);
+
+        // Smooth scroll para enlaces internos
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Contador animado para las horas de formación (opcional)
+        function animateValue(element, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                element.textContent = Math.floor(progress * (end - start) + start);
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        // Log de bienvenida estilo hacker en la consola
+        console.log('%c¡Sistema Inicializado!', 'color: #00ff00; font-size: 20px; font-weight: bold; font-family: monospace;');
+        console.log('%cAcceso Autorizado: CV de José M. Caballero', 'color: #00cc00; font-size: 14px; font-family: monospace;');
+        console.log('%c> Ejecutando matrix.js...', 'color: #009900; font-size: 12px; font-family: monospace;');
+        console.log('%c> Sistema operativo: Matrix OS v4.5', 'color: #009900; font-size: 12px; font-family: monospace;');
+        console.log('%c> Estado: ONLINE', 'color: #00ff00; font-size: 12px; font-family: monospace;');
+    </script>
+</body>
+</html>
